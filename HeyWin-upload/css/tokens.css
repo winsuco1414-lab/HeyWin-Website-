@@ -1,0 +1,54 @@
+/* HeyWin design tokens
+ * Brand colours only. Lines/tints are transparent versions of the same four colours.
+ * Fonts: Montserrat (headlines) + DM Sans (body) — from the approved brand list.
+ */
+:root {
+  color-scheme: dark;
+
+  /* Brand colours */
+  --navy:   #0B0F19;  /* page background */
+  --card:   #161F30;  /* cards, panels */
+  --ivory:  #F4F4F6;  /* text */
+  --gold:   #D4AF37;  /* accent, primary buttons */
+
+  /* Tints derived from the brand colours */
+  --ivory-80:  rgb(244 244 246 / 0.80);  /* body copy */
+  --ivory-60:  rgb(244 244 246 / 0.64);  /* secondary text (passes AA on navy + card) */
+  --line:      rgb(244 244 246 / 0.10);  /* hairlines */
+  --line-2:    rgb(244 244 246 / 0.18);  /* stronger borders */
+  --gold-soft: rgb(212 175 55 / 0.12);   /* gold wash */
+  --gold-line: rgb(212 175 55 / 0.45);   /* gold borders */
+  --gold-hover: #E0C15F;                 /* gold mixed ~25% with ivory */
+  --shadow:    rgb(0 0 0 / 0.45);
+
+  /* Type */
+  --font-head: "Montserrat", system-ui, sans-serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
+
+  --fs-xs:   0.8125rem;                         /* 13px — labels, legal */
+  --fs-sm:   0.9375rem;                         /* 15px — small body */
+  --fs-base: 1.0625rem;                         /* 17px — body */
+  --fs-lg:   1.1875rem;                         /* 19px — lead text */
+  --fs-h4:   1.25rem;                           /* 20px — card titles */
+  --fs-h3:   clamp(1.375rem, 2.4vw, 1.625rem);  /* 22–26px */
+  --fs-h2:   clamp(1.875rem, 4.4vw, 2.875rem);  /* 30–46px */
+  --fs-h1:   clamp(2.375rem, 6.6vw, 4.5rem);    /* 38–72px */
+
+  /* Space — 4px scale */
+  --s-1: 0.25rem;  --s-2: 0.5rem;  --s-3: 0.75rem; --s-4: 1rem;
+  --s-5: 1.5rem;   --s-6: 2rem;    --s-7: 3rem;    --s-8: 4rem;
+  --s-9: 6rem;     --s-10: 8rem;
+
+  /* Shape */
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --r-pill: 999px;
+
+  /* Motion — subtle fades only */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --fast: 150ms;
+  --slow: 700ms;
+
+  --max: 72rem;
+}
