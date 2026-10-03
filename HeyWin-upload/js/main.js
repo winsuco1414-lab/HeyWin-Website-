@@ -64,7 +64,6 @@
   if (form) {
     const btn = $('button[type="submit"]', form);
     const status = $('[data-lead-status]', form);
-    const done = $('[data-lead-done]');
     const label = btn.textContent;
 
     form.addEventListener('submit', async (e) => {
@@ -72,6 +71,7 @@
       btn.disabled = true;
       btn.textContent = 'Sending…';
       status.textContent = '';
+      status.classList.remove('is-success');
       try {
         const res = await fetch('/', {
           method: 'POST',
@@ -79,13 +79,14 @@
           body: new URLSearchParams(new FormData(form)).toString(),
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        form.hidden = true;
-        done.hidden = false;
-        done.focus();
+        form.reset();
+        status.classList.add('is-success');
+        status.textContent = "Thanks, I've got your details. I'll get back to you by email soon.";
       } catch (err) {
+        status.textContent = `Sorry, that didn't send. Please try again, or email me at ${CONFIG.email}.`;
+      } finally {
         btn.disabled = false;
         btn.textContent = label;
-        status.textContent = `Sorry, that didn't send. Please try again, or email me at ${CONFIG.email}.`;
       }
     });
   }
