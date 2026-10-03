@@ -58,6 +58,38 @@
     }
   });
 
+  /* ---------- Lead form (Netlify Forms) ---------- */
+  // Sends in the background so visitors stay on the page. Without JS, the form still posts to Netlify normally.
+  const form = $('[data-lead-form]');
+  if (form) {
+    const btn = $('button[type="submit"]', form);
+    const status = $('[data-lead-status]', form);
+    const done = $('[data-lead-done]');
+    const label = btn.textContent;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+      status.textContent = '';
+      try {
+        const res = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(new FormData(form)).toString(),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        form.hidden = true;
+        done.hidden = false;
+        done.focus();
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = label;
+        status.textContent = `Sorry, that didn't send. Please try again, or email me at ${CONFIG.email}.`;
+      }
+    });
+  }
+
   /* ---------- Header border on scroll ---------- */
   const header = $('[data-header]');
   if (header) {
@@ -79,11 +111,11 @@
     fades.forEach((el) => el.classList.add('is-in'));
   }
 
-  /* ---------- Mobile sticky CTA (hidden over the hero and final CTA) ---------- */
+  /* ---------- Mobile sticky CTA (hidden over the hero, lead form and final CTA) ---------- */
   const bar = $('[data-mobile-cta]');
   if (bar && 'IntersectionObserver' in window) {
     const link = $('a', bar);
-    const watched = new Map([[$('.hero'), true], [$('.final'), false], [$('.footer'), false]]);
+    const watched = new Map([[$('.hero'), true], [$('#contact'), false], [$('.final'), false], [$('.footer'), false]]);
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => watched.set(e.target, e.isIntersecting));
       const show = [...watched.values()].every((v) => !v);
