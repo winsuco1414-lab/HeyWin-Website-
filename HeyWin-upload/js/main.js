@@ -79,6 +79,14 @@
           body: new URLSearchParams(new FormData(form)).toString(),
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        // Count the sign-up as a lead in Google Analytics (no personal details are sent)
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'generate_lead', {
+            form_name: 'lead',
+            service: form.service.value,
+            timeline: form.timeline.value,
+          });
+        }
         form.reset();
         status.classList.add('is-success');
         status.textContent = "Thanks, I've got your details. I'll get back to you by email soon.";
