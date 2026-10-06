@@ -10,9 +10,9 @@
     portfolioUrl: 'https://my-portfolio-website-omega-sand.vercel.app/',
     // Paste full profile URLs. Leave '' to hide that icon.
     socials: {
-      instagram: '',
+      instagram: 'https://www.instagram.com/heywin_business/',
       facebook: 'https://www.facebook.com/profile.php?id=61574369100452',
-      linkedin: '',
+      linkedin: 'https://www.linkedin.com/in/winfield-macabato-985412297/',
       tiktok: '',
       youtube: '',
     },
