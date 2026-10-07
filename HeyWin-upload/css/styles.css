@@ -132,6 +132,13 @@ section[id] { scroll-margin-top: 5rem; }
   .hero__grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: var(--s-8); }
 }
 
+/* Same look as the gold uppercase labels (.service__tag, .case__type) */
+.hero__eyebrow {
+  margin-bottom: var(--s-4);
+  font-size: var(--fs-xs); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--gold);
+}
+
 .hero h1 {
   font-size: var(--fs-h1);
   font-weight: 800;
@@ -240,6 +247,7 @@ section[id] { scroll-margin-top: 5rem; }
 .service__line { margin-top: var(--s-2); color: var(--ivory); font-size: var(--fs-lg); }
 .service p + p { margin-top: var(--s-3); }
 .service__body { margin-top: var(--s-3); }
+.service__more { display: inline-block; margin-top: var(--s-5); white-space: normal; }
 
 .checks { margin-top: var(--s-5); display: grid; gap: var(--s-3); }
 .checks li { position: relative; padding-left: var(--s-6); }
@@ -302,6 +310,12 @@ section[id] { scroll-margin-top: 5rem; }
 .plan .btn { margin-top: var(--s-6); }
 
 .plan--wide { margin-top: var(--s-4); }
+/* Gold uppercase label between plan groups (same look as .service__tag) */
+.plans__label {
+  margin: var(--s-7) 0 var(--s-4); text-align: center;
+  font-size: var(--fs-xs); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--gold);
+}
 @media (min-width: 820px) {
   .plan--wide {
     display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--s-6);
@@ -319,6 +333,7 @@ section[id] { scroll-margin-top: 5rem; }
   border: 1px dashed var(--gold-line);
 }
 @media (min-width: 820px) { .addon { margin-top: 0; } }
+.plans + .addon { margin-top: var(--s-4); }  /* add-on box shown on its own under a plan grid */
 .addon__top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: var(--s-2); }
 .addon__label { font-size: var(--fs-xs); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold); }
 .addon h4 { font-size: var(--fs-h4); font-weight: 700; margin-top: var(--s-1); }
@@ -385,6 +400,7 @@ section[id] { scroll-margin-top: 5rem; }
 @media (min-width: 760px) {
   .review-video { grid-template-columns: minmax(0, 20rem) minmax(0, 1fr); gap: var(--s-8); padding: var(--s-6); }
 }
+.section__head + .review-video { margin-top: 0; }
 .review-video__frame {
   width: 100%; max-width: 20rem; margin-inline: auto;
   border-radius: var(--r-md);
@@ -464,6 +480,7 @@ section[id] { scroll-margin-top: 5rem; }
 @media (min-width: 640px) { .field-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); } }
 .field { display: grid; gap: var(--s-2); }
 .field label, .choice legend { font-size: var(--fs-sm); font-weight: 600; color: var(--ivory); }
+.field__optional { font-weight: 400; color: var(--ivory-60); }
 .field input {
   width: 100%; min-height: 3rem;
   padding: var(--s-2) var(--s-4);
@@ -564,6 +581,9 @@ section[id] { scroll-margin-top: 5rem; }
 @media (min-width: 768px) { .footer__top { grid-template-columns: minmax(0, 1fr) auto; align-items: start; } }
 .footer__logo img { height: 3.25rem; width: auto; }
 .footer__tag { margin-top: var(--s-3); font-size: var(--fs-sm); color: var(--ivory-60); max-width: 22rem; }
+.footer__links { margin-top: var(--s-5); display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); font-size: var(--fs-sm); }
+.footer__links a { color: var(--ivory-80); }
+.footer__links a:hover { color: var(--gold); }
 .footer__contact { display: grid; gap: var(--s-3); }
 .footer__email { color: var(--ivory); font-weight: 500; overflow-wrap: anywhere; }
 .footer__email:hover { color: var(--gold); }

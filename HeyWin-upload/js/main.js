@@ -3,19 +3,10 @@
   'use strict';
 
   // ---- Edit these before launch ------------------------------------------
+  // The Calendly link lives in each [data-book] link's href in the HTML, and social links are in the footer HTML.
   const CONFIG = {
-    // Your Calendly event link. While empty, every "Book" button opens an email to you instead.
-    calendlyUrl: 'https://calendly.com/heywinfieldfunnels/new-meeting',
     email: 'heywinfieldfunnels@gmail.com',
     portfolioUrl: 'https://my-portfolio-website-omega-sand.vercel.app/',
-    // Paste full profile URLs. Leave '' to hide that icon.
-    socials: {
-      instagram: 'https://www.instagram.com/heywin_business/',
-      facebook: 'https://www.facebook.com/profile.php?id=61574369100452',
-      linkedin: 'https://www.linkedin.com/in/winfield-macabato-985412297/',
-      tiktok: '',
-      youtube: '',
-    },
   };
   // ---------------------------------------------------------------------------
 
@@ -28,35 +19,45 @@
   $$('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
 
   /* ---------- Booking buttons ---------- */
-  const mailtoHref = `mailto:${CONFIG.email}?subject=${encodeURIComponent('Discovery call request')}&body=${encodeURIComponent("Hi Win,\n\nI'd like to book a free discovery call.\n\nMy business: \nWhat I need help with: \nBest days/times for me: \n")}`;
+  // Each [data-book] link points at Calendly in the HTML, so it works without JS (opens in a new tab).
+  // With JS, Calendly's popup files load on the first click instead of on page load.
+  let calendlyReady;
+  const loadCalendly = () => {
+    if (calendlyReady) return calendlyReady;
+    const css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = 'https://assets.calendly.com/assets/external/widget.css';
+    document.head.appendChild(css);
+    calendlyReady = new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = 'https://assets.calendly.com/assets/external/widget.js';
+      s.async = true;
+      s.onload = () => (window.Calendly ? resolve(window.Calendly) : reject(new Error('Calendly missing')));
+      s.onerror = reject;
+      setTimeout(() => reject(new Error('Calendly timed out')), 5000);
+      document.head.appendChild(s);
+    });
+    return calendlyReady;
+  };
 
   $$('[data-book]').forEach((btn) => {
-    if (!CONFIG.calendlyUrl) {
-      btn.href = mailtoHref;
-      return;
-    }
-    btn.href = CONFIG.calendlyUrl;
-    btn.target = '_blank';
-    btn.rel = 'noopener';
     btn.addEventListener('click', (e) => {
-      // Open as a popup on the page when Calendly's widget has loaded; otherwise the link opens in a new tab.
-      if (window.Calendly && typeof window.Calendly.initPopupWidget === 'function') {
-        e.preventDefault();
-        window.Calendly.initPopupWidget({ url: CONFIG.calendlyUrl });
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'book_call_click', { cta_location: btn.dataset.book || 'unknown' });
       }
+      // Let Ctrl/Cmd/Shift-clicks open Calendly in a new tab or window as normal.
+      if (e.ctrlKey || e.metaKey || e.shiftKey) return;
+      e.preventDefault();
+      const url = btn.href;
+      // If the popup can't load (blocked or offline), go to the Calendly page instead.
+      loadCalendly()
+        .then((Calendly) => Calendly.initPopupWidget({ url }))
+        .catch(() => { window.location.href = url; });
     });
   });
 
-  /* ---------- Portfolio + socials ---------- */
+  /* ---------- Portfolio ---------- */
   $$('[data-portfolio]').forEach((a) => { a.href = CONFIG.portfolioUrl; });
-
-  $$('[data-social]').forEach((a) => {
-    const url = CONFIG.socials[a.dataset.social];
-    if (url) {
-      a.href = url;
-      a.closest('li').hidden = false;
-    }
-  });
 
   /* ---------- Lead form (Netlify Forms) ---------- */
   // Sends in the background so visitors stay on the page. Without JS, the form still posts to Netlify normally.
@@ -84,7 +85,7 @@
           window.gtag('event', 'generate_lead', {
             form_name: 'lead',
             service: form.service.value,
-            timeline: form.timeline.value,
+            timeline: form.timeline.value || 'not given',
           });
         }
         form.reset();
